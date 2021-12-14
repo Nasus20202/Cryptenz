@@ -1,0 +1,15 @@
+{
+  "name": "funbot",
+  "version": "1.0.0",
+  "description": "Just for fun",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@coinpaprika/api-nodejs-client": "^1.2.0",
+    "discord.js": "^13.3.1"
+  }
+}
