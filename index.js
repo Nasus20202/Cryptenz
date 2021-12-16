@@ -64,7 +64,7 @@ client.on('messageCreate', message => {
     });
 
     const embed = new MessageEmbed()
-        .setColor("#ffd300")
+        .setColor("#" + ((1<<24)*Math.random() | 0).toString(16))
         .setTitle("The latest cryptocurrency rates!")
         .setThumbnail('https://cdn.discordapp.com/attachments/701029821701947392/920371197525524520/thumbnail.png')
         .addFields(fields)
