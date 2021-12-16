@@ -56,7 +56,11 @@ client.on('messageCreate', message => {
     var fields = [];
     cryptos.forEach(element => {
         var info = coins[element];
-        fields.push({name : `${info.symbol} ${info.name}`, value : `Current price: ${info.price_usd} $ \n Hour change:  ${info.change_1h} % \n Day change:  ${info.change_24h} % \n Week change:  ${info.change_7d} %`});
+        fields.push({name : `${info.symbol} ${info.name}`, value : `
+        💲    \xa0\xa0\xa0 Current price: ${info.price_usd} $
+        ${parseFloat(info.change_1h) >= 0 ? "🟢" : "🔴"} \xa0\xa0\xa0 Hour change:  ${info.change_1h} %
+        ${parseFloat(info.change_24h) >= 0 ? "🟢" : "🔴"} \xa0\xa0\xa0 Day change:  ${info.change_24h} % 
+        ${parseFloat(info.change_7d) >= 0 ? "🟢" : "🔴"} \xa0\xa0\xa0  Week change:  ${info.change_7d} %`});
     });
 
     const embed = new MessageEmbed()
