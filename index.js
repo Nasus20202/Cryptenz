@@ -6,8 +6,9 @@ const client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_PRESENC
 const crypto = new CoinpaprikaAPI();
 
 var cryptos = [
-    "btc-bitcoin", "eth-ethereum", "bnb-binance-coin", "sol-solana", "ada-cardano", "bch-bitcoin-cash", "ltc-litecoin"
+    "btc-bitcoin", "eth-ethereum", "bnb-binance-coin", "sol-solana", "ada-cardano", "bch-bitcoin-cash", "ltc-litecoin", "dot-polkadot", "xrp-xrp"
 ]
+
 const cryptoCount = cryptos.length;
 
 class CoinInfo {
@@ -44,7 +45,7 @@ client.once('ready', () => {
     updateCrypto();
     changeStatus();
     setInterval(updateCrypto, 60000);
-    setInterval(changeStatus, 6000);
+    setInterval(changeStatus, 4000);
 });
 
 client.on('messageCreate', message => {
