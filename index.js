@@ -46,7 +46,7 @@ client.once('ready', () => {
     console.log(`Logged into Discord as ${client.user.tag}!`);
     updateCrypto();
     changeStatus();
-    setInterval(updateCrypto, 300000);
+    setInterval(updateCrypto, 3600000);
     setInterval(changeStatus, 4000);
 });
 
