@@ -10,6 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "@coinpaprika/api-nodejs-client": "^1.2.0",
-    "discord.js": "^13.3.1"
+    "discord.js": "^13.8.0"
   }
 }
