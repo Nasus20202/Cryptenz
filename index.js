@@ -24,6 +24,7 @@ cryptos.forEach(element => {
 
 function getCrypto(code){
     crypto.getAllTickers({coinId: code, quotes: ['USD']}).then(function(result) {
+        try {
         coins[code].name = result["name"];
         coins[code].symbol = result["symbol"];
         coins[code].price_usd =  (Math.round(result["quotes"]["USD"]["price"] * 100) / 100).toFixed(2);
@@ -32,6 +33,7 @@ function getCrypto(code){
         coins[code].change_7d = Math.round(result["quotes"]["USD"]["percent_change_7d"] * 100) / 100;
         coins[code].change_30d = Math.round(result["quotes"]["USD"]["percent_change_30d"] * 100) / 100;
         coins[code].change_1y = Math.round(result["quotes"]["USD"]["percent_change_1y"] * 100) / 100;
+        } catch {}
      });
 };
 
@@ -53,7 +55,9 @@ client.once('ready', () => {
 client.on('messageCreate', message => {
     if(!(message.content.startsWith("!crypto") || message.content.startsWith("!c") || message.content.startsWith("/crypto") || message.content.startsWith("/c")))
          return;
-    message.delete();
+    try{
+        message.delete();
+    } catch {}
 
     var fields = [];
     cryptos.forEach(element => {
@@ -88,6 +92,5 @@ function changeStatus(){
     client.user.setPresence({ activities: [{ name: activity, type : "WATCHING" }], status: info.change_24h >= 0 ? "online" : "dnd" });
     statusCounter++;
 }
-
 
 client.login(token);
