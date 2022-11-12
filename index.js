@@ -1,12 +1,14 @@
-const {Client, Intents, MessageEmbed, REST, Routes, GatewayIntentBits} = require('discord.js');
+const {Client, EmbedBuilder, REST, Routes, GatewayIntentBits, ActivityType} = require('discord.js');
 const {token, client_id} = require('./config.json');
 const CoinpaprikaAPI = require('@coinpaprika/api-nodejs-client');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildPresences]});
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildPresences, GatewayIntentBits.GuildIntegrations] });
 const crypto = new CoinpaprikaAPI();
 
+
 var cryptos = [
-    "btc-bitcoin", "eth-ethereum", "bnb-binance-coin", "sol-solana", "ada-cardano", "bch-bitcoin-cash", "ltc-litecoin", "dot-polkadot", "avax-avalanche", "ftt-ftx-token", "hex-hex", "trx-tron", "xrp-xrp"
+    "btc-bitcoin", "eth-ethereum", "bnb-binance-coin", "xrp-xrp", "doge-dogecoin", "ada-cardano", "hex-hex", "matic-polygon",
+    "dot-polkadot", "sol-solana", "trx-tron", "ltc-litecoin", "avax-avalanche", "atom-cosmos"
 ]
 
 const cryptoCount = cryptos.length;
@@ -47,17 +49,13 @@ function updateCrypto(){
 const commands = [
     {
       name: 'crypto',
-      description: 'The latest cryptocurrency rates!',
-    },
+      description: 'The latest cryptocurrencies rates!',
+    }
   ];
 const rest = new REST({ version: '10' }).setToken(token);
 (async () => {
 try {
-    console.log('Started refreshing application (/) commands.');
-
     await rest.put(Routes.applicationCommands(client_id), { body: commands });
-
-    console.log('Successfully reloaded application (/) commands.');
 } catch (error) {
     console.error(error);
 }
@@ -85,7 +83,7 @@ function createCryptoEmbed(){
         ${parseFloat(info.change_1y) >= 0 ? "🟢" : "🔴"} \xa0\xa0\xa0  Year change:  ${info.change_1y} %`});
     });
 
-    return new MessageEmbed()
+    return new EmbedBuilder()
         .setColor("#" + ((1<<24)*Math.random() | 0).toString(16))
         .setTitle("The latest cryptocurrency rates!")
         .setThumbnail('https://cdn.discordapp.com/attachments/701029821701947392/920371197525524520/thumbnail.png')
@@ -93,14 +91,13 @@ function createCryptoEmbed(){
         .setTimestamp()
 }
 
-client.on('messageCreate', message => {
-    if(!(message.content.startsWith("!crypto") || message.content.startsWith("!c") || message.content.startsWith("/crypto") || message.content.startsWith("/c")))
-         return;
-    try{
-        message.delete();
-    } catch {}
-    message.channel.send({ embeds: [createCryptoEmbed()]} );
-});
+
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isChatInputCommand()) return;
+    if (interaction.commandName === 'crypto') {
+      await interaction.reply({ embeds: [createCryptoEmbed()] });
+    }
+  });
 
 
 var statusCounter = 0;
@@ -110,7 +107,7 @@ function changeStatus(){
     }
     var info = coins[cryptos[statusCounter]];
     var activity = `${info.symbol} ${info.price_usd} $ ${info.change_24h} %`
-    client.user.setPresence({ activities: [{ name: activity, type : "WATCHING" }], status: info.change_24h >= 0 ? "online" : "dnd" });
+    client.user.setPresence({ activities: [{ name: activity, type : ActivityType.Watching }], status: info.change_24h >= 0 ? "online" : "dnd" });
     statusCounter++;
 }
 
