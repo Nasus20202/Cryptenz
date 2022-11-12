@@ -1,8 +1,8 @@
-const {Client, Intents, MessageEmbed} = require('discord.js');
-const {token} = require('./config.json');
+const {Client, Intents, MessageEmbed, REST, Routes, GatewayIntentBits} = require('discord.js');
+const {token, client_id} = require('./config.json');
 const CoinpaprikaAPI = require('@coinpaprika/api-nodejs-client');
 
-const client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_PRESENCES"]});
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildPresences]});
 const crypto = new CoinpaprikaAPI();
 
 var cryptos = [
@@ -43,6 +43,26 @@ function updateCrypto(){
     })
 }
 
+// register slash commands
+const commands = [
+    {
+      name: 'crypto',
+      description: 'The latest cryptocurrency rates!',
+    },
+  ];
+const rest = new REST({ version: '10' }).setToken(token);
+(async () => {
+try {
+    console.log('Started refreshing application (/) commands.');
+
+    await rest.put(Routes.applicationCommands(client_id), { body: commands });
+
+    console.log('Successfully reloaded application (/) commands.');
+} catch (error) {
+    console.error(error);
+}
+})();
+
 
 client.once('ready', () => {
     console.log(`Logged into Discord as ${client.user.tag}!`);
@@ -52,13 +72,7 @@ client.once('ready', () => {
     setInterval(changeStatus, 4000);
 });
 
-client.on('messageCreate', message => {
-    if(!(message.content.startsWith("!crypto") || message.content.startsWith("!c") || message.content.startsWith("/crypto") || message.content.startsWith("/c")))
-         return;
-    try{
-        message.delete();
-    } catch {}
-
+function createCryptoEmbed(){
     var fields = [];
     cryptos.forEach(element => {
         var info = coins[element];
@@ -71,14 +85,21 @@ client.on('messageCreate', message => {
         ${parseFloat(info.change_1y) >= 0 ? "🟢" : "🔴"} \xa0\xa0\xa0  Year change:  ${info.change_1y} %`});
     });
 
-    const embed = new MessageEmbed()
+    return new MessageEmbed()
         .setColor("#" + ((1<<24)*Math.random() | 0).toString(16))
         .setTitle("The latest cryptocurrency rates!")
         .setThumbnail('https://cdn.discordapp.com/attachments/701029821701947392/920371197525524520/thumbnail.png')
         .addFields(fields)
         .setTimestamp()
+}
 
-    message.channel.send({ embeds: [embed]} );
+client.on('messageCreate', message => {
+    if(!(message.content.startsWith("!crypto") || message.content.startsWith("!c") || message.content.startsWith("/crypto") || message.content.startsWith("/c")))
+         return;
+    try{
+        message.delete();
+    } catch {}
+    message.channel.send({ embeds: [createCryptoEmbed()]} );
 });
 
 
