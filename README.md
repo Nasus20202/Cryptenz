@@ -10,5 +10,4 @@ Requires:
  - coinpaprika/api-nodejs-client
 
 
-Add it to your server:
-https://discord.com/oauth2/authorize?client_id=920374756434399304&permissions=26624&scope=bot
+[Add it to your server!](https://discord.com/api/oauth2/authorize?client_id=920374756434399304&permissions=0&scope=bot%20applications.commands)
