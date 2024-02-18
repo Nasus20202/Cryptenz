@@ -1,7 +1,7 @@
 {
-  "name": "funbot",
+  "name": "cryptenz",
   "version": "1.0.0",
-  "description": "Just for fun",
+  "description": "Cryptocurrency bot for Discord",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@coinpaprika/api-nodejs-client": "^1.2.0",
-    "discord.js": "^14.6.0"
+    "@coinpaprika/api-nodejs-client": "^2.0.0",
+    "discord.js": "^14.14.1"
   }
 }
