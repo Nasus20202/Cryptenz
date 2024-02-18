@@ -3,18 +3,13 @@ const {
   EmbedBuilder,
   REST,
   Routes,
-  GatewayIntentBits,
   ActivityType,
 } = require("discord.js");
 const { token, client_id } = require("./config.json");
 const CoinpaprikaAPI = require("@coinpaprika/api-nodejs-client");
 
 const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildPresences,
-    GatewayIntentBits.GuildIntegrations,
-  ],
+  intents: [],
 });
 const crypto = new CoinpaprikaAPI();
 
