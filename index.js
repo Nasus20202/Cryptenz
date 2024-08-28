@@ -5,8 +5,10 @@ const {
   Routes,
   ActivityType,
 } = require("discord.js");
-const { token, client_id } = require("./config.json");
 const CoinpaprikaAPI = require("@coinpaprika/api-nodejs-client");
+
+const token = process.env.APP_TOKEN;
+const client_id = process.env.APP_CLIENT_ID;
 
 const client = new Client({
   intents: [],

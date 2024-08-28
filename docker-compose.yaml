@@ -1,0 +1,8 @@
+services:
+  cryptenz:
+    build: .
+    container_name: cryptenz
+    restart: always
+    environment:
+      - APP_TOKEN=${APP_TOKEN}
+      - APP_CLIENT_ID=${APP_CLIENT_ID}
